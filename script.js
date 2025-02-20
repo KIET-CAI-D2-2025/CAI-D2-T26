@@ -1,60 +1,41 @@
-document.getElementById("predictBtn").addEventListener("click", async function () {
-    const formData = {
-        age: document.getElementById("age").value,
-        gender: document.getElementById("gender").value,
-        income: document.getElementById("income").value,
-        health_status: document.getElementById("health_status").value,
-        smoking: document.getElementById("smoking").value,
-        family_history: document.getElementById("family_history").value
-    };
+document.getElementById("predict-btn").addEventListener("click", function () {
+    let age = document.getElementById("age").value;
+    let income = document.getElementById("income").value;
+    let gender = document.querySelector('input[name="gender"]:checked').value;
+    let smoke = document.querySelector('input[name="smoke"]:checked').value;
+    let health = document.getElementById("health").value;
 
-    try {
-        const response = await fetch("http://localhost:5000/predict", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(formData)
-        });
-
-        const data = await response.json();
-        document.getElementById("result").innerHTML = `
-            <p><strong>Eligibility:</strong> ${data.eligibility}</p>
-            <p><strong>Policies:</strong> ${data.policies.join(", ")}</p>
-            <p><strong>Premium Estimates:</strong> ${JSON.stringify(data.premiums)}</p>
-        `;
-    } catch (error) {
-        console.error("Error fetching prediction:", error);
-        document.getElementById("result").innerHTML = <p style="color: red;">Error fetching prediction</p>;
-    }
+    fetch('http://localhost:5000/predict', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ age, income, gender, smoke, health })
+    })
+    .then(response => response.json())
+    .then(data => {
+        let resultDiv = document.getElementById("result");
+        resultDiv.style.background = data.eligible ? "green" : "red";
+        
+        let message = data.message;
+        if (data.eligible && data.policies) {
+            message += '<br><br>Available Policies:<br>';
+            data.policies.forEach(policy => {
+                const premium = data.premiums[policy].toFixed(2);
+                message += `${policy}: $${premium} per month<br>`;
+            });
+        }
+        
+        resultDiv.innerHTML = message;
+        resultDiv.classList.remove("hidden");
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        let resultDiv = document.getElementById("result");
+        resultDiv.style.background = "red";
+        resultDiv.innerHTML = "An error occurred. Please try again.";
+        resultDiv.classList.remove("hidden");
+    });
 });
 
-// 3D Sphere Animation
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-const renderer = new THREE.WebGLRenderer({ alpha: true });
-renderer.setSize(window.innerWidth, window.innerHeight);
-document.body.appendChild(renderer.domElement);
-
-const geometry = new THREE.SphereGeometry(1.5, 64, 64);
-const material = new THREE.MeshStandardMaterial({ color: "royalblue", roughness: 0.5, metalness: 0.7 });
-const sphere = new THREE.Mesh(geometry, material);
-scene.add(sphere);
-
-const light = new THREE.DirectionalLight(0xffffff, 1);
-light.position.set(2, 2, 2);
-scene.add(light);
-
-camera.position.z = 5;
-
-function animate() {
-    requestAnimationFrame(animate);
-    sphere.rotation.y += 0.01;
-    renderer.render(scene, camera);
+function updateAgeValue(val) {
+    document.getElementById("age-value").textContent = val;
 }
-animate();
-
-// Handle resizing
-window.addEventListener("resize", () => {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-});

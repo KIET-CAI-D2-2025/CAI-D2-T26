@@ -1,60 +1,74 @@
-*{
-    margin:0;
-    padding:0;
-    box-sizing: border-box;
+body {
     font-family: Arial, sans-serif;
+    background-color: #121212;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
-body{
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    height:100vh;
-    background:url("bg_image.jpg") no-repeat center center/cover;
-    color:white;
-    overflow:hidden;
-}
-.main-container{
-    position:absolute;
-    z-index: 10;
-    background: rgba(0, 0, 0, 0.8);
+
+.container {
+    background: #1e1e1e;
     padding: 20px;
     border-radius: 10px;
-    width: 350px;
+    width: 400px;
     text-align: center;
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
 }
-input, button{
+
+h1 {
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-top: 10px;
+}
+
+input, select {
     width: 100%;
-    margin: 10px 0;
-    padding: 10px;
+    padding: 5px;
+    margin-top: 5px;
+    border-radius: 5px;
     border: none;
-    border-radius: 5px;
-}
-input{
-    background:#222;
-    color:white;
-    outline:none;
-}
-button{
-    background: royalblue;
-    color: white;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: bold;
-}
-button:hover{
-    background:darkblue;
-}
-#result{
-    margin-top: 20px;
     background: #333;
-    padding: 10px;
-    border-radius: 5px;
-    text-align: left;
+    color: white;
 }
-canvas{
-    position:absolute;
-    top:0;
-    left:0;
-    z-index:0;
+
+.radio-group {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 5px 0;
+}
+
+.radio-group input {
+    width: auto;
+}
+
+button {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 10px;
+    margin-top: 15px;
+    width: 100%;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: darkred;
+}
+
+.hidden {
+    display: none;
+}
+
+#result {
+    background: green;
+    padding: 10px;
+    margin-top: 15px;
+    border-radius: 5px;
 }
