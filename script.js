@@ -20,7 +20,7 @@ document.getElementById("predict-btn").addEventListener("click", function () {
             message += '<br><br>Available Policies:<br>';
             data.policies.forEach(policy => {
                 const premium = data.premiums[policy].toFixed(2);
-                message += `${policy}: $${premium} per month<br>`;
+                message += `${policy}: Rs.${premium} per month<br>`;
             });
         }
         

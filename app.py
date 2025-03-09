@@ -67,6 +67,14 @@ def predict():
         if col != 'Policy_Type':
             input_data[col] = label_encoders[col].transform(input_data[col])
     
+    # Check for underage smoking condition
+    if age < 18 and smoking == "Yes":
+        return jsonify({
+            'eligible': False,
+            'message': 'Not Eligible for Insurance - Underage smoking detected.',
+            'model_accuracy': accuracy
+        })
+    
     input_data['Policy_Type'] = 0
     
     prediction = model.predict(input_data)
@@ -79,12 +87,11 @@ def predict():
     elif income > 5000:
         eligible_policies = ['Term']
     else:
-        response = {
+        return jsonify({
             'eligible': False,
-            'message': 'Sorry, you are not eligible for life insurance at this time.',
+            'message': 'Not Eligible for Insurance - Income is below the minimum threshold of 5000.',
             'model_accuracy': accuracy
-        }
-        return jsonify(response)
+        })
     
     premium_estimates = {}
     for policy in eligible_policies:
