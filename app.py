@@ -57,6 +57,7 @@ def predict_insurance():
         if age < 18 and smoking == "Yes":
             st.error("❌ Not Eligible for Insurance")
             st.write("Reason: Underage smoking detected.")
+            st.info("💡 Suggestion: Maintain a healthy lifestyle and avoid smoking to improve eligibility in the future.")
             return
 
         model, premium_model, label_encoders, accuracy = train_model()
@@ -76,6 +77,7 @@ def predict_insurance():
         else:
             st.error("❌ Not Eligible for Insurance")
             st.write("Reason: Income is below the minimum threshold of 5000")
+            st.info("💡 Suggestion: Consider increasing your income and improving your financial stability before applying again.")
             return
 
         premium_estimates = {}
@@ -91,6 +93,10 @@ def predict_insurance():
             st.write(f"- {policy}: {premium:.2f}")
         
         st.write(f"Model Accuracy: {accuracy * 100:.2f}%")
+
+        # Suggestions for eligible users
+        st.info("💡 Important Advice: If you miss paying your premium, you may face policy lapses, additional charges, or loss of coverage. To avoid this, consider setting up automatic payments or reminders.")
+        st.info("📌 If you ever face financial difficulty, check with your insurer about grace periods, premium holidays, or policy adjustments to maintain coverage.")
 
 if __name__ == "__main__":
     predict_insurance()
