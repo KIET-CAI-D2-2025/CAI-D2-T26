@@ -72,17 +72,15 @@ def predict():
         return jsonify({
             'eligible': False,
             'message': 'Not Eligible for Insurance - Underage smoking detected.',
+            'suggestions': 'It is recommended to adopt a healthier lifestyle and reapply after turning 18.',
             'model_accuracy': accuracy
         })
     
     input_data['Policy_Type'] = 0
     
-    prediction = model.predict(input_data)
-    response = {}
-    
     if income > 100000 and health_status == 'Excellent':
         eligible_policies = ['Whole', 'Universal', 'Term']
-    elif income > 50000 and health_status in ['Good', 'Average']:
+    elif income > 50000 and health_status in ['Good', 'Average', 'Excellent']:
         eligible_policies = ['Universal', 'Term']
     elif income > 5000:
         eligible_policies = ['Term']
@@ -90,6 +88,7 @@ def predict():
         return jsonify({
             'eligible': False,
             'message': 'Not Eligible for Insurance - Income is below the minimum threshold of 5000.',
+            'suggestions': 'Consider increasing your income or opting for alternative financial security options.',
             'model_accuracy': accuracy
         })
     
@@ -98,11 +97,22 @@ def predict():
         input_data['Policy_Type'] = label_encoders['Policy_Type'].transform([policy])[0]
         premium_estimates[policy] = float(premium_model.predict(input_data)[0])
     
+    # Suggestions based on policy eligibility
+    suggestions = "Make sure to pay premiums on time to avoid policy lapse. "
+    
+    if "Whole" in eligible_policies:
+        suggestions += "Whole life policies require consistent payments. If missed, your policy might lapse, but some offer cash value. "
+    if "Universal" in eligible_policies:
+        suggestions += "Universal policies offer flexible premiums. Missing payments may impact benefits, so monitor your cash value. "
+    if "Term" in eligible_policies:
+        suggestions += "Term insurance has no cash value. If you miss payments, coverage stops. Consider setting up auto-payments."
+    
     response = {
         'eligible': True,
         'message': 'You are eligible for life insurance!',
         'policies': eligible_policies,
         'premiums': premium_estimates,
+        'suggestions': suggestions,
         'model_accuracy': accuracy
     }
     

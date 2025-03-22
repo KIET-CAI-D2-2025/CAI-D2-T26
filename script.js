@@ -1,41 +1,39 @@
-document.getElementById("predict-btn").addEventListener("click", function () {
-    let age = document.getElementById("age").value;
-    let income = document.getElementById("income").value;
-    let gender = document.querySelector('input[name="gender"]:checked').value;
-    let smoke = document.querySelector('input[name="smoke"]:checked').value;
-    let health = document.getElementById("health").value;
+document.getElementById('predictForm').addEventListener('submit', async function(event) {
+    event.preventDefault();
 
-    fetch('http://localhost:5000/predict', {
+    let age = document.getElementById('age').value;
+    let gender = document.getElementById('gender').value;
+    let income = document.getElementById('income').value;
+    let health = document.getElementById('health').value;
+    let smoke = document.getElementById('smoke').value;
+
+    let response = await fetch('http://127.0.0.1:5000/predict', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ age, income, gender, smoke, health })
-    })
-    .then(response => response.json())
-    .then(data => {
-        let resultDiv = document.getElementById("result");
-        resultDiv.style.background = data.eligible ? "green" : "red";
-        
-        let message = data.message;
-        if (data.eligible && data.policies) {
-            message += '<br><br>Available Policies:<br>';
-            data.policies.forEach(policy => {
-                const premium = data.premiums[policy].toFixed(2);
-                message += `${policy}: Rs.${premium} per month<br>`;
-            });
-        }
-        
-        resultDiv.innerHTML = message;
-        resultDiv.classList.remove("hidden");
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        let resultDiv = document.getElementById("result");
-        resultDiv.style.background = "red";
-        resultDiv.innerHTML = "An error occurred. Please try again.";
-        resultDiv.classList.remove("hidden");
+        body: JSON.stringify({ age, gender, income, health, smoke })
     });
-});
 
-function updateAgeValue(val) {
-    document.getElementById("age-value").textContent = val;
-}
+    let data = await response.json();
+
+    document.getElementById('result').innerHTML = `<strong>${data.message}</strong>`;
+
+    if (data.suggestions) {
+        document.getElementById('suggestions').innerHTML = `💡 ${data.suggestions}`;
+    } else {
+        document.getElementById('suggestions').innerHTML = '';
+    }
+
+    if (data.eligible) {
+        let policyText = `<strong>Eligible Policies:</strong> ${data.policies.join(", ")}`;
+        document.getElementById('policies').innerHTML = policyText;
+
+        let premiumText = "<strong>Estimated Premiums:</strong><br>";
+        for (let policy in data.premiums) {
+            premiumText += `${policy}: $${data.premiums[policy].toFixed(2)}<br>`;
+        }
+        document.getElementById('premiums').innerHTML = premiumText;
+    } else {
+        document.getElementById('policies').innerHTML = "";
+        document.getElementById('premiums').innerHTML = "";
+    }
+});

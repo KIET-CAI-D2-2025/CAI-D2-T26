@@ -1,74 +1,47 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #121212;
-    color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
-
-.container {
-    background: #1e1e1e;
-    padding: 20px;
-    border-radius: 10px;
-    width: 400px;
+    margin: 40px;
+    background-color: #f4f4f4;
     text-align: center;
 }
-
-h1 {
-    font-size: 20px;
-    margin-bottom: 20px;
+.container {
+    width: 50%;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px 0px #ccc;
 }
-
 label {
+    font-weight: bold;
     display: block;
     margin-top: 10px;
 }
-
 input, select {
     width: 100%;
-    padding: 5px;
+    padding: 8px;
     margin-top: 5px;
-    border-radius: 5px;
-    border: none;
-    background: #333;
-    color: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
 }
-
-.radio-group {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin: 5px 0;
-}
-
-.radio-group input {
-    width: auto;
-}
-
 button {
-    background-color: red;
+    margin-top: 15px;
+    background: #28a745;
     color: white;
+    padding: 10px;
     border: none;
-    padding: 10px;
-    margin-top: 15px;
-    width: 100%;
-    border-radius: 5px;
     cursor: pointer;
+    width: 100%;
+    border-radius: 4px;
 }
-
 button:hover {
-    background-color: darkred;
+    background: #218838;
 }
-
-.hidden {
-    display: none;
+#result, #policies, #premiums, #suggestions {
+    margin-top: 20px;
+    font-size: 16px;
 }
-
-#result {
-    background: green;
-    padding: 10px;
-    margin-top: 15px;
-    border-radius: 5px;
+#suggestions {
+    color: blue;
+    font-weight: bold;
 }
