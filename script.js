@@ -1,3 +1,4 @@
+/* script.js */
 document.getElementById('predictForm').addEventListener('submit', async function(event) {
     event.preventDefault();
 
@@ -15,25 +16,27 @@ document.getElementById('predictForm').addEventListener('submit', async function
 
     let data = await response.json();
 
-    document.getElementById('result').innerHTML = `<strong>${data.message}</strong>`;
+    let resultDiv = document.getElementById('result');
+    resultDiv.classList.remove('d-none');
+    resultDiv.innerHTML = `<strong>${data.message}</strong>`;
+    resultDiv.classList.add(data.eligible ? 'alert-success' : 'alert-danger');
+    resultDiv.classList.add('animate__animated', 'animate__fadeIn');
 
-    if (data.suggestions) {
-        document.getElementById('suggestions').innerHTML = `💡 ${data.suggestions}`;
-    } else {
-        document.getElementById('suggestions').innerHTML = '';
-    }
+    let policiesDiv = document.getElementById('policies');
+    let premiumsDiv = document.getElementById('premiums');
+    let suggestionsDiv = document.getElementById('suggestions');
 
     if (data.eligible) {
-        let policyText = `<strong>Eligible Policies:</strong> ${data.policies.join(", ")}`;
-        document.getElementById('policies').innerHTML = policyText;
-
+        policiesDiv.innerHTML = `<strong>Eligible Policies:</strong> ${data.policies.join(", ")}`;
         let premiumText = "<strong>Estimated Premiums:</strong><br>";
         for (let policy in data.premiums) {
-            premiumText += `${policy}: $${data.premiums[policy].toFixed(2)}<br>`;
+            premiumText += `${policy}: ₹${data.premiums[policy].toFixed(2)}<br>`;
         }
-        document.getElementById('premiums').innerHTML = premiumText;
+        premiumsDiv.innerHTML = premiumText;
     } else {
-        document.getElementById('policies').innerHTML = "";
-        document.getElementById('premiums').innerHTML = "";
+        policiesDiv.innerHTML = "";
+        premiumsDiv.innerHTML = "";
     }
+
+    suggestionsDiv.innerHTML = data.suggestions ? `💡 ${data.suggestions}` : '';
 });

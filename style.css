@@ -1,47 +1,66 @@
+/* style.css */
 body {
-    font-family: Arial, sans-serif;
-    margin: 40px;
-    background-color: #f4f4f4;
-    text-align: center;
-}
-.container {
-    width: 50%;
-    margin: auto;
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0px 0px 10px 0px #ccc;
-}
-label {
-    font-weight: bold;
-    display: block;
-    margin-top: 10px;
-}
-input, select {
-    width: 100%;
-    padding: 8px;
-    margin-top: 5px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-button {
-    margin-top: 15px;
-    background: #28a745;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(to right, #1a2a6c, #b21f1f, #fca311);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
     color: white;
-    padding: 10px;
+}
+
+.container {
+    max-width: 500px;
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card {
+    border-radius: 20px;
+    background: rgba(0, 0, 0, 0.8);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+button {
+    transition: all 0.3s ease;
+    background: linear-gradient(to right, #00b09b, #96c93d);
     border: none;
-    cursor: pointer;
-    width: 100%;
-    border-radius: 4px;
-}
-button:hover {
-    background: #218838;
-}
-#result, #policies, #premiums, #suggestions {
-    margin-top: 20px;
-    font-size: 16px;
-}
-#suggestions {
-    color: blue;
+    padding: 12px 20px;
     font-weight: bold;
+    color: white;
+}
+
+button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.alert {
+    font-weight: bold;
+    border-radius: 10px;
+}
+
+.form-label {
+    font-weight: 500;
+}
+
+input, select {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+}
+
+input:focus, select:focus {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+::placeholder {
+    color: rgba(255, 255, 255, 0.7);
 }
