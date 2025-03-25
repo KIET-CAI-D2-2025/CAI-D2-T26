@@ -80,6 +80,19 @@ def predict_insurance():
             st.info("💡 Suggestion: Consider increasing your income and improving your financial stability before applying again.")
             return
 
+        # Define company links for each type of insurance
+        company_links = {
+            "Whole": ["LIC Jeevan Umang - [LIC](https://www.licindia.in)",
+                      "HDFC Life Sanchay Whole Life - [HDFC Life](https://www.hdfclife.com)",
+                      "Max Life Whole Life Super - [Max Life](https://www.maxlifeinsurance.com)"],
+            "Universal": ["ICICI Pru Lifetime Classic - [ICICI Prudential](https://www.iciciprulife.com)",
+                          "SBI Life Smart Privilege - [SBI Life](https://www.sbilife.co.in)",
+                          "Tata AIA Smart Sampoorna Raksha - [Tata AIA](https://www.tataaia.com)"],
+            "Term": ["LIC Tech Term - [LIC](https://www.licindia.in)",
+                     "HDFC Life Click 2 Protect - [HDFC Life](https://www.hdfclife.com)",
+                     "ICICI Pru iProtect Smart - [ICICI Prudential](https://www.iciciprulife.com)"]
+        }
+
         premium_estimates = {}
         for policy in eligible_policies:
             policy_encoded = label_encoders['Policy_Type'].transform([policy])[0]
@@ -91,8 +104,15 @@ def predict_insurance():
         st.write("Estimated Premiums:")
         for policy, premium in premium_estimates.items():
             st.write(f"- {policy}: {premium:.2f}")
-        
+
         st.write(f"Model Accuracy: {accuracy * 100:.2f}%")
+
+        # Display company links
+        st.write("🔗 **Recommended Insurance Providers:**")
+        for policy in eligible_policies:
+            st.write(f"**{policy} Insurance:**")
+            for link in company_links[policy]:
+                st.write(f"- {link}")
 
         # Suggestions for eligible users
         st.info("💡 Important Advice: If you miss paying your premium, you may face policy lapses, additional charges, or loss of coverage. To avoid this, consider setting up automatic payments or reminders.")
