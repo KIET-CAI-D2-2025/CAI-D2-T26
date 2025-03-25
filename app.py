@@ -25,11 +25,11 @@ def train_model():
     # Train the model using XGBoost
     model = XGBClassifier(eval_metric='logloss')
     model.fit(X, y)
-    
+
     # Model accuracy
     y_pred = model.predict(X)
     accuracy = accuracy_score(y, y_pred)
-    
+
     # Train the premium model using XGBoost
     premium_model = XGBRegressor()
     premium_model.fit(X, data['Premium_Amount'])
@@ -63,14 +63,14 @@ def predict_insurance():
         model, premium_model, label_encoders, accuracy = train_model()
 
         input_data = pd.DataFrame([[age, gender, income, health_status, smoking, 'Term']],
-                                   columns=['Age', 'Gender', 'Income', 'Health_Status', 'Smoking_Habit', 'Policy_Type'])
+                                    columns=['Age', 'Gender', 'Income', 'Health_Status', 'Smoking_Habit', 'Policy_Type'])
 
         for col, le in label_encoders.items():
             input_data[col] = le.transform(input_data[col].astype(str))
 
         if income > 100000 and health_status == 'Excellent':
             eligible_policies = ['Whole', 'Universal', 'Term']
-        elif income > 50000 and health_status in ['Good', 'Average']:
+        elif income > 50000 and health_status in ['Good', 'Average', 'Excellent']:
             eligible_policies = ['Universal', 'Term']
         elif income > 5000:
             eligible_policies = ['Term']
@@ -86,8 +86,8 @@ def predict_insurance():
                       "HDFC Life Sanchay Whole Life - [HDFC Life](https://www.hdfclife.com)",
                       "Max Life Whole Life Super - [Max Life](https://www.maxlifeinsurance.com)"],
             "Universal": ["ICICI Pru Lifetime Classic - [ICICI Prudential](https://www.iciciprulife.com)",
-                          "SBI Life Smart Privilege - [SBI Life](https://www.sbilife.co.in)",
-                          "Tata AIA Smart Sampoorna Raksha - [Tata AIA](https://www.tataaia.com)"],
+                            "SBI Life Smart Privilege - [SBI Life](https://www.sbilife.co.in)",
+                            "Tata AIA Smart Sampoorna Raksha - [Tata AIA](https://www.tataaia.com)"],
             "Term": ["LIC Tech Term - [LIC](https://www.licindia.in)",
                      "HDFC Life Click 2 Protect - [HDFC Life](https://www.hdfclife.com)",
                      "ICICI Pru iProtect Smart - [ICICI Prudential](https://www.iciciprulife.com)"]
