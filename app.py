@@ -70,7 +70,7 @@ def predict_insurance():
     init_db()
     st.title("\U0001F3E6 Life Insurance Eligibility & Premium Prediction")
 
-    name = st.text_input("Enter your full name (first name and surname):")
+    name = st.text_input("Enter your full name (First Name and Last Name):")
     if name and len(name.strip().split()) < 2:
         st.warning("⚠️ Please enter your full name with surname (e.g., Gandhi Mahatma).")
         return
@@ -141,7 +141,7 @@ def predict_insurance():
         for policy, premium in premium_estimates.items():
             st.write(f"- {policy}: {premium:.2f}")
 
-        st.write(f"Model Accuracy: {accuracy * 100:.2f}%")
+        # st.write(f"Model Accuracy: {accuracy * 100:.2f}%")
 
         st.write("🔗 **Recommended Insurance Providers:**")
         for policy in eligible_policies:
